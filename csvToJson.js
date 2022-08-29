@@ -1,5 +1,4 @@
 const fs = require("fs");
-const { cd } = require("shelljs");
 
 const csvToJSON = async (fileName, repoName) => {
     return new Promise((resolve, reject) => {

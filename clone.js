@@ -1,18 +1,12 @@
 const fs = require("fs");
 const shell = require("shelljs");
 const axios = require("axios");
-
-const readJsonFile = (file) => {
-    let bufferData = fs.readFileSync(file);
-    let stData = bufferData.toString();
-    let data = JSON.parse(stData);
-    return data;
-};
+const utils = require("./utils");
 
 const cloneRepos = async (fileName) => {
     let missingRepo = [];
     return new Promise(async (resolve, reject) => {
-        const repo = readJsonFile(`./data/${fileName}.json`);
+        const repo = utils.readJsonFile(`./data/${fileName}.json`);
         shell.mkdir("repo");
         for (const student of repo) {
             await axios
@@ -27,8 +21,9 @@ const cloneRepos = async (fileName) => {
                     missingRepo.push(student.lastName);
                 });
         }
+        shell.cd(`${__dirname}/repo`);
         resolve(missingRepo);
     });
 };
 
-module.exports = cloneRepos;
+module.exports = { cloneRepos };
