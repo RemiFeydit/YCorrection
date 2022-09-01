@@ -16,3 +16,7 @@ Le programme clone automatiquement tous les repositorys en les nommant en foncti
 -   Créer un dossier `data` où vous mettez les fichiers `.csv` généré par l'HyperPlanning
 
 ## Exemples
+
+```bash
+node main.js <nomFichier> <nomRepo>
+```
