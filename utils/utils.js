@@ -124,19 +124,18 @@ function removeExtraSpaces(str) {
   str = str.trim();
 
   // Remplacer tous les espaces multiples par un seul espace
-  str = str.replace(/\s+/g, ' ');
+  str = str.replace(/\s+/g, " ");
 
   // Retirer les espaces entre les mots en les remplaçant par rien
-  str = str.replace(/(\S+)\s+(\S+)/g, '$1$2');
+  str = str.replace(/(\S+)\s+(\S+)/g, "$1$2");
 
   return str;
 }
 
-
 function timeout(ms) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      reject(new Error('Timeout'));
+      reject(new Error("Timeout"));
     }, ms);
   });
 }
@@ -145,7 +144,7 @@ async function timeOutFunction(func, arg) {
   try {
     await Promise.race([func(arg), timeout(5000)]);
   } catch (error) {
-    console.error('Erreur:', error);
+    console.error("Erreur:", error);
   }
 }
 
@@ -161,5 +160,5 @@ module.exports = {
   convertJSONDatatoCSVData,
   executeQuery,
   removeExtraSpaces,
-  timeout
+  timeout,
 };
