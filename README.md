@@ -7,16 +7,23 @@ Le programme clone automatiquement tous les repositorys en les nommant en foncti
 
 ## Pré-requis
 
--   Avoir node et npm
+- Avoir node et yarn
 
 ## Installation
 
--   Cloner le repository
--   `npm install`
--   Créer un dossier `data` où vous mettez les fichiers `.csv` généré par l'HyperPlanning
+- Cloner le repository
+- `yarn install`
+- Créer un dossier `data` où vous mettez les fichiers `.csv` généré par l'HyperPlanning
+- Copiez le `.env.example` et faites un `.env` puis remplissez la variable avec le token de l'API de GITEA
+  Pour la récupérer faites la commande suivante :
+
+```bash
+curl -XPOST -H "Content-Type: application/json"  -k -d '{"name":"test"}' -u $PseudoYtrack:$MdpYtac https://ytrack.learn.ynov.com/git/api/v1/users/$PseudoYtrack/tokens
+
+```
 
 ## Exemples
 
 ```bash
-node main.js <nomFichier> <nomRepo>
+node main.js
 ```
