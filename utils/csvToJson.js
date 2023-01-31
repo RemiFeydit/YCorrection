@@ -12,7 +12,7 @@ const csvToJSON = async (fileName) => {
       const lines = csv.split("\n");
       const result = [];
 
-      lines.slice(1).map((l) => {
+      lines.slice(2).map((l) => {
         const obj = {};
         const line = l.split(";");
         const nameArr = line[0].replaceAll('"', "").split(" ");
