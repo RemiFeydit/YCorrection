@@ -651,5 +651,3 @@ module.exports = {
   q16Correction,
   q17Correction,
 };
-
-module.exports = { correctionExamJS };
