@@ -2,6 +2,7 @@ const fs = require("fs");
 const utils = require("../../utils/utils");
 
 const inverseStringCorrection = (lastName, firstName, repoNameDir) => {
+  console.log('\x1b[36m%s\x1b[0m', 'inverse-string');
   let exercice1 = 0;
   if (
     fs.existsSync(
@@ -19,7 +20,7 @@ const inverseStringCorrection = (lastName, firstName, repoNameDir) => {
       if (inverseString("") == "") {
         exercice1 += 0.5;
       }
-      if (inverseString("Hello World")) {
+      if (inverseString("Hello World") == "World Hello") {
         exercice1 += 0.75;
       }
       if (
@@ -36,12 +37,14 @@ const inverseStringCorrection = (lastName, firstName, repoNameDir) => {
       if (inverseString(undefined) == "") {
         exercice1 += 0.5;
       }
-    } catch (error) {}
+    } catch (error) {
+    }
   }
   return exercice1;
 };
 
 const manipArrayCorrection = (lastName, firstName, repoNameDir) => {
+  console.log('\x1b[36m%s\x1b[0m', 'manip-array');
   let exercice2 = 0;
   if (
     fs.existsSync(
@@ -105,12 +108,14 @@ const manipArrayCorrection = (lastName, firstName, repoNameDir) => {
       if (utils.arraysEqual(manipArray(undefined) == [])) {
         exercice2 += 0.5;
       }
-    } catch (error) {}
+    } catch (error) {
+    }
   }
   return exercice2;
 };
 
 const lettersOccurenceCorrection = (lastName, firstName, repoNameDir) => {
+  console.log('\x1b[36m%s\x1b[0m', 'letters-occurence');
   let exercice3 = 0;
   if (
     fs.existsSync(
@@ -138,16 +143,7 @@ const lettersOccurenceCorrection = (lastName, firstName, repoNameDir) => {
         exercice3 += 0.25;
       }
       if (
-        utils.compareObjects(lettersOccurence("Hello World"), {
-          h: 1,
-          e: 1,
-          l: 3,
-          o: 2,
-          " ": 1,
-          w: 1,
-          r: 1,
-          d: 1,
-        })
+        utils.compareObjects(lettersOccurence("Hello World"), {H: 1, e: 1, l: 3, o: 2, ' ': 1, W: 1, r: 1, d: 1})
       ) {
         exercice3 += 0.5;
       }
@@ -180,48 +176,53 @@ const lettersOccurenceCorrection = (lastName, firstName, repoNameDir) => {
             8: 1,
             9: 1,
             o: 1,
-            c: 5,
-            t: 3,
-            y: 3,
+            c: 3,
+            t: 2,
+            y: 2,
             a: 2,
-            z: 2,
-            x: 4,
+            z: 1,
+            Z: 1,
+            X: 1,
             q: 3,
-            w: 1,
-            r: 2,
+            W: 1,
+            x: 3,
+            R: 2,
             d: 1,
-            b: 2,
-            s: 2,
+            B: 2,
+            s: 1,
             f: 1,
-            j: 2,
-            h: 1,
+            C: 2,
+            J: 1,
+            j: 1,
+            H: 1,
             g: 1,
             e: 1,
-            k: 3,
+            K: 2,
+            S: 1,
+            Y: 1,
             i: 1,
-            v: 2,
+            V: 1,
+            v: 1,
+            k: 1,
+            T: 1,
           }
         )
       ) {
         exercice3 += 1;
       }
       if (
-        utils.compareObjects(lettersOccurence(65466632), {
-          2: 1,
-          3: 1,
-          4: 1,
-          5: 1,
-          6: 4,
-        })
+        utils.compareObjects(lettersOccurence(65466632), {'2': 1, '3': 1, '4': 1, '5': 1, '6': 4})
       ) {
         exercice3 += 0.5;
       }
-    } catch (error) {}
+    } catch (error) {
+    }
   }
   return exercice3;
 };
 
 const TCGBattleCorrection = (lastName, firstName, repoNameDir) => {
+  console.log('\x1b[36m%s\x1b[0m', 'tcg-battle');
   let exercice4 = 0;
   if (
     fs.existsSync(
@@ -264,12 +265,14 @@ const TCGBattleCorrection = (lastName, firstName, repoNameDir) => {
       if (TCGBattle("12 24 42 6", "10 6 42 20") == "Perdant") {
         exercice4 += 0.75;
       }
-    } catch (error) {}
+    } catch (error) {
+    }
   }
   return exercice4;
 };
 
 const extractObjectCorrection = (lastName, firstName, repoNameDir) => {
+  console.log('\x1b[36m%s\x1b[0m', 'extract-object');
   let exercice5 = 0;
   if (
     fs.existsSync(
@@ -289,7 +292,7 @@ const extractObjectCorrection = (lastName, firstName, repoNameDir) => {
           extractObject(
             `Je ne vais pas taffer comme la Chine {"Valentin":"prenom","Sullyvan":"nom"} parce que taffer comme la Chine ça fait monter le taux de Co2`
           ),
-          [{ prenom: "Valentin", nom: "Sullyvan" }]
+          [{prenom: "Valentin", nom: "Sullyvan"}]
         )
       ) {
         exercice5 += 1;
@@ -300,9 +303,9 @@ const extractObjectCorrection = (lastName, firstName, repoNameDir) => {
             `Hello there {"hello":2,"a":3} comment ça va ? {"a":1,"z":2} {"hello":"World","abc":"def"}`
           ),
           [
-            { 2: "hello", 3: "a" },
-            { 1: "a", 2: "z" },
-            { World: "hello", def: "abc" },
+            {2: "hello", 3: "a"},
+            {1: "a", 2: "z"},
+            {World: "hello", def: "abc"},
           ]
         )
       ) {
@@ -314,9 +317,9 @@ const extractObjectCorrection = (lastName, firstName, repoNameDir) => {
             `Hello there {"hello":2,"a":3} comment ça va ? {"a":1,"z":2} {"hello":"World","abc":"def"}`
           ),
           [
-            { 2: "hello", 3: "a" },
-            { 1: "a", 2: "z" },
-            { World: "hello", def: "abc" },
+            {2: "hello", 3: "a"},
+            {1: "a", 2: "z"},
+            {World: "hello", def: "abc"},
           ]
         )
       ) {
@@ -331,7 +334,8 @@ const extractObjectCorrection = (lastName, firstName, repoNameDir) => {
       if (utils.compareArrays(extractObject(``), [])) {
         exercice5 += 0.5;
       }
-    } catch (error) {}
+    } catch (error) {
+    }
   }
   return exercice5;
 };

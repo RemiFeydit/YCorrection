@@ -22,11 +22,11 @@ const cloneRepos = async (fileName, repoName) => {
           }
           if (
             !fs.existsSync(
-              `repo/${fileName}_${repoName}/${student.lastName}_${student.firstName}`
+              `repo/${fileName}_${repoName}/${student.lastName.replaceAll(" ", "-")}_${student.firstName}`
             )
           ) {
             shell.exec(
-              `git clone ${response.data.clone_url} repo/${fileName}_${repoName}/${student.lastName}_${student.firstName}`
+              `git clone ${response.data.clone_url} repo/${fileName}_${repoName}/${student.lastName.replaceAll(" ", "-")}_${student.firstName}`
             );
           }
         })
@@ -37,4 +37,4 @@ const cloneRepos = async (fileName, repoName) => {
     resolve(missingRepo);
   });
 };
-module.exports = { cloneRepos };
+module.exports = {cloneRepos};

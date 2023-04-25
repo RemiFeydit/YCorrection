@@ -18,18 +18,11 @@ const csvToJSON = async (fileName) => {
         const nameArr = line[0].replaceAll('"', "").split(" ");
         obj.firstName = nameArr
           .at(-1)
-          .replaceAll("'", "")
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "");
         obj.lastName = nameArr
           .slice(0, -1)
           .join(" ")
-          .replaceAll("'", "")
-          .replaceAll(" ", "-")
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "");
         obj.ytrackName =
-          obj.firstName[0].toUpperCase() + obj.lastName.replaceAll(" ", "-");
+          obj.lastName[0].toLowerCase() + obj.firstName.slice(0, 7).replace(/[\u0300-\u036f]/g, "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         result.push(obj);
       });
       data = JSON.stringify(result);

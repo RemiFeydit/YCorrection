@@ -11,7 +11,13 @@ const checkYtrackName = async (fileName) => {
       await axios
         .get(
           `https://ytrack.learn.ynov.com/git/api/v1/users/${student.ytrackName}?token=${process.env.API_KEY}`
-        )
+        ).then((data) => {
+          let jsonFullName = utils.removeExtraSpaces(`${student.lastName} ${student.firstName}`)
+          let ytrackFullName = utils.removeExtraSpaces(data.data.full_name)
+          if (jsonFullName !== ytrackFullName) {
+            missingRepo.push(student.lastName)
+          }
+        })
         .catch((error) => {
           missingRepo.push(student.lastName);
         });
@@ -19,4 +25,4 @@ const checkYtrackName = async (fileName) => {
     resolve(missingRepo);
   });
 };
-module.exports = { checkYtrackName };
+module.exports = {checkYtrackName};
