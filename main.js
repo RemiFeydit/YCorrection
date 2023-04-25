@@ -1,3 +1,4 @@
+const { correctionExamSQL } = require("./utils/correctionExamSQL");
 const { checkYtrackName } = require("./utils/checkYtrackName");
 const { cloneRepos } = require("./utils/clone");
 const { correctionExamJS } = require("./utils/correctionExamJS");
@@ -57,7 +58,10 @@ const main = async () => {
         await correctionExamJS(fileName);
         break;
       case "5":
-        console.log("SQL");
+        let fileNameSQL = utils.getUserInput(
+          "Comment s'appelle le fichier JSON que vous voulez utiliser pour la correction ?\n"
+        );
+        await correctionExamSQL(fileNameSQL);
         break;
       case "6":
         console.log("Bye ! o/");
