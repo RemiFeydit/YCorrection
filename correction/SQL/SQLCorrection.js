@@ -27,7 +27,6 @@ const q1Correction = async (lastName, firstName, repoNameDir) => {
       `${__dirname.replace(
         "correction/SQL",
         ""
-      )}repo/${repoNameDir}/${lastName}_${firstName}/student_answer/part_1/q1.js`
     )
   ) {
     try {
