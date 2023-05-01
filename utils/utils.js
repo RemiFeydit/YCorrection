@@ -9,6 +9,10 @@ const readJsonFile = (file) => {
   return data;
 };
 
+function isObject(obj) {
+  return obj !== undefined && obj !== null && obj.constructor == Object;
+}
+
 const arraysEqual = (a, b) => {
   a = Array.isArray(a) ? a : [];
   b = Array.isArray(b) ? b : [];
@@ -149,6 +153,7 @@ async function timeOutFunction(func, arg) {
 }
 
 module.exports = {
+  isObject,
   readJsonFile,
   compareArrays,
   arraysEqual,

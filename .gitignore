@@ -9,6 +9,7 @@ lerna-debug.log*
 test.js
 *.csv
 data
+yarn.lock
 results
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
