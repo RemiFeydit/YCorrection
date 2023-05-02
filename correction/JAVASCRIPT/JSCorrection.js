@@ -1,6 +1,9 @@
-const fs = require("fs");
-const utils = require("../../utils/utils");
 const gradeCalculator = require("../../utils/gradeCalculator");
+const {
+  isFileExists,
+  compareArrays,
+  compareObjects,
+} = require("../../utils/utils");
 
 const inverseStringCorrection = (lastName, firstName, repoNameDir) => {
   let isWin = process.platform === "win32";
@@ -15,7 +18,7 @@ const inverseStringCorrection = (lastName, firstName, repoNameDir) => {
       )}repo/${repoNameDir}/${lastName}_${firstName}/inverse-string.js`;
   console.log("\x1b[36m%s\x1b[0m", "inverse-string");
   let exercice1 = 0;
-  if (fs.existsSync(filePath)) {
+  if (isFileExists(filePath)) {
     try {
       const inverseString = require(filePath);
       exercice1 += gradeCalculator(inverseString, "", "", 0.5);
@@ -54,7 +57,7 @@ const manipArrayCorrection = (lastName, firstName, repoNameDir) => {
       )}repo/${repoNameDir}/${lastName}_${firstName}/manip-array.js`;
   console.log("\x1b[36m%s\x1b[0m", "manip-array");
   let exercice2 = 0;
-  if (fs.existsSync(filePath)) {
+  if (isFileExists(filePath)) {
     try {
       const manipArray = require(filePath);
       exercice2 += gradeCalculator(manipArray, [[]], [], 0.25);
@@ -111,7 +114,7 @@ const lettersOccurenceCorrection = (lastName, firstName, repoNameDir) => {
       )}repo/${repoNameDir}/${lastName}_${firstName}/letters-occurence.js`;
   console.log("\x1b[36m%s\x1b[0m", "letters-occurence");
   let exercice3 = 0;
-  if (fs.existsSync(filePath)) {
+  if (isFileExists(filePath)) {
     try {
       const lettersOccurence = require(filePath);
       exercice3 += gradeCalculator(lettersOccurence, "", {}, 0.25);
@@ -220,7 +223,7 @@ const TCGBattleCorrection = (lastName, firstName, repoNameDir) => {
       )}repo/${repoNameDir}/${lastName}_${firstName}/tcg-battle.js`;
   console.log("\x1b[36m%s\x1b[0m", "tcg-battle");
   let exercice4 = 0;
-  if (fs.existsSync(filePath)) {
+  if (isFileExists(filePath)) {
     try {
       const TCGBattle = require(filePath);
       exercice4 += gradeCalculator(
@@ -278,11 +281,11 @@ const extractObjectCorrection = (lastName, firstName, repoNameDir) => {
       )}repo/${repoNameDir}/${lastName}_${firstName}/extract-object.js`;
   console.log("\x1b[36m%s\x1b[0m", "extract-object");
   let exercice5 = 0;
-  if (fs.existsSync(filePath)) {
+  if (isFileExists(filePath)) {
     try {
       const extractObject = require(filePath);
       if (
-        utils.compareArrays(
+        compareArrays(
           extractObject(
             `Je ne vais pas taffer comme la Chine {"Valentin":"prenom","Sullyvan":"nom"} parce que taffer comme la Chine ça fait monter le taux de Co2`
           ),
@@ -292,7 +295,7 @@ const extractObjectCorrection = (lastName, firstName, repoNameDir) => {
         exercice5 += 1;
       }
       if (
-        utils.compareArrays(
+        compareArrays(
           extractObject(
             `Hello there {"hello":2,"a":3} comment ça va ? {"a":1,"z":2} {"hello":"World","abc":"def"}`
           ),
@@ -306,7 +309,7 @@ const extractObjectCorrection = (lastName, firstName, repoNameDir) => {
         exercice5 += 1;
       }
       if (
-        utils.compareObjects(
+        compareObjects(
           extractObject(
             `Hello there {"hello":2,"a":3} comment ça va ? {"a":1,"z":2} {"hello":"World","abc":"def"}`
           ),
@@ -319,13 +322,11 @@ const extractObjectCorrection = (lastName, firstName, repoNameDir) => {
       ) {
         exercice5 += 1;
       }
-      if (
-        utils.compareArrays(extractObject(`Hello there comment ça va ?`), [])
-      ) {
+      if (compareArrays(extractObject(`Hello there comment ça va ?`), [])) {
         exercice5 += 0.5;
       }
 
-      if (utils.compareArrays(extractObject(``), [])) {
+      if (compareArrays(extractObject(``), [])) {
         exercice5 += 0.5;
       }
     } catch (error) {

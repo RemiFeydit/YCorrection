@@ -1,4 +1,3 @@
-const utils = require("./utils");
 const shell = require("shelljs");
 const fs = require("fs");
 const axios = require("axios");
@@ -21,12 +20,18 @@ const {
   q16Correction,
   q17Correction,
 } = require("../correction/SQL/SQLCorrection");
+const {
+  readJsonFile,
+  convertDate,
+  convertJSONDatatoCSVData,
+  isFileExists,
+} = require("./utils");
 
 const correctionExamSQL = (fileName) => {
   return new Promise(async (resolve, reject) => {
     let res = [];
     let repoName = "projet-sql-B2";
-    const repos = utils.readJsonFile(
+    const repos = readJsonFile(
       `${__dirname.replace("/utils", "")}/data/${fileName}.json`
     );
     for (let repo of repos) {
@@ -36,7 +41,7 @@ const correctionExamSQL = (fileName) => {
           `https://ytrack.learn.ynov.com/git/api/v1/repos/${repo.ytrackName}/${repoName}?token=${process.env.API_KEY}`
         )
         .then((response) => {
-          grades.lastPush = utils.convertDate(response.data.updated_at);
+          grades.lastPush = convertDate(response.data.updated_at);
         })
         .catch((error) => {
           grades.lastPush = "N/A";
@@ -155,8 +160,8 @@ const correctionExamSQL = (fileName) => {
       res.push(grades);
       resolve(res);
     }
-    let csvData = utils.convertJSONDatatoCSVData(res);
-    if (!fs.existsSync(`./results`)) {
+    let csvData = convertJSONDatatoCSVData(res);
+    if (!isFileExists(`./results`)) {
       shell.exec(`mkdir ./results`);
     }
     fs.writeFileSync(`./results/${fileName}_SQLResults.csv`, csvData);
