@@ -23,11 +23,12 @@ const fs = require("fs");
 const q1Correction = async (lastName, firstName, repoNameDir) => {
   let res = 0;
   if (
-    fs.existsSync(
-      `${__dirname.replace(
-        "correction/SQL",
-        ""
-    )
+      fs.existsSync(
+          `${__dirname.replace(
+              "correction/SQL",
+              ""
+          )}repo/${repoNameDir}/${lastName}_${firstName}/student_answer/part_1/q1.js`
+      )
   ) {
     try {
       const q1 = require(`${__dirname.replace(

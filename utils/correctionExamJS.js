@@ -1,4 +1,3 @@
-const utils = require("./utils");
 const shell = require("shelljs");
 const fs = require("fs");
 const axios = require("axios");
@@ -9,22 +8,31 @@ const {
   TCGBattleCorrection,
   extractObjectCorrection,
 } = require("../correction/JAVASCRIPT/JSCorrection");
+const {
+  convertJSONDatatoCSVData,
+  convertDate,
+  readJsonFile,
+} = require("./utils");
 
 const correctionExamJS = (fileName) => {
+  let isWin = process.platform === "win32";
+  let filePath = isWin
+    ? `${__dirname.replace("\\utils", "")}\\data\\${fileName}.json`
+    : `${__dirname.replace("/utils", "")}/data/${fileName}.json`;
+  console.log(filePath);
   return new Promise(async (resolve, reject) => {
     let res = [];
-    let repoName = "exam-js";
-    const repos = utils.readJsonFile(
-      `${__dirname.replace("/utils", "")}/data/${fileName}.json`
-    );
+    let repoName = "eval-js";
+    const repos = readJsonFile(filePath);
     for (let repo of repos) {
-      let grades = { lastName: repo.lastName };
+      console.log("\x1b[31m%s\x1b[0m", `${repo.lastName} ${repo.firstName}`);
+      let grades = { lastName: repo.lastName.replaceAll(" ", "-") };
       await axios
         .get(
           `https://ytrack.learn.ynov.com/git/api/v1/repos/${repo.ytrackName}/${repoName}?token=${process.env.API_KEY}`
         )
         .then((response) => {
-          grades.lastPush = utils.convertDate(response.data.updated_at);
+          grades.lastPush = convertDate(response.data.updated_at);
         })
         .catch((error) => {
           grades.lastPush = "N/A";
@@ -34,27 +42,27 @@ const correctionExamJS = (fileName) => {
       }
       grades.total = 0;
       grades.exercice1 = inverseStringCorrection(
-        repo.lastName,
+        grades.lastName,
         repo.firstName,
         `${fileName}_${repoName}`
       );
       grades.exercice2 = manipArrayCorrection(
-        repo.lastName,
+        grades.lastName,
         repo.firstName,
         `${fileName}_${repoName}`
       );
       grades.exercice3 = lettersOccurenceCorrection(
-        repo.lastName,
+        grades.lastName,
         repo.firstName,
         `${fileName}_${repoName}`
       );
       grades.exercice4 = TCGBattleCorrection(
-        repo.lastName,
+        grades.lastName,
         repo.firstName,
         `${fileName}_${repoName}`
       );
       grades.exercice5 = extractObjectCorrection(
-        repo.lastName,
+        grades.lastName,
         repo.firstName,
         `${fileName}_${repoName}`
       );
@@ -67,9 +75,9 @@ const correctionExamJS = (fileName) => {
       res.push(grades);
       resolve(res);
     }
-    let csvData = utils.convertJSONDatatoCSVData(res);
+    let csvData = convertJSONDatatoCSVData(res);
     if (!fs.existsSync(`./results`)) {
-      shell.exec(`mkdir ./results`);
+      shell.exec(`mkdir results`);
     }
     fs.writeFileSync(`./results/${fileName}_jsResults.csv`, csvData);
     console.clear();
