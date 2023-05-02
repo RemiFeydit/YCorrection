@@ -4,9 +4,10 @@ const { cloneRepos } = require("./utils/clone");
 const { correctionExamJS } = require("./utils/correctionExamJS");
 const csvToJSON = require("./utils/csvToJson");
 const utils = require("./utils/utils");
+const { checkYtrackProgressJS } = require("./utils/checkYtrackProgressJS");
 
 const main = async () => {
-  var menu = require("console-menu");
+  let menu = require("console-menu");
   menu(
     [
       { hotkey: "1", title: "Converti le fichier CSV de l'HP en JSON" },
@@ -17,7 +18,8 @@ const main = async () => {
       { hotkey: "3", title: "Clone tous les repos" },
       { hotkey: "4", title: "Lance la correction de l'Exam de Javascript" },
       { hotkey: "5", title: "Lance la correction de l'Exam de SQL" },
-      { hotkey: "6", title: "Quitter" },
+      { hotkey: "6", title: "Lance le check d'un parcours YTrack" },
+      { hotkey: "7", title: "Quitter" },
     ],
     {
       header: "YCorrection",
@@ -64,6 +66,14 @@ const main = async () => {
         await correctionExamSQL(fileNameSQL);
         break;
       case "6":
+        let fileNameCheckJS = utils.getUserInput(
+          "Comment s'appelle le fichier JSON que vous voulez utiliser pour la correction ?\n"
+        );
+        let repoNameCheckJS = utils.getUserInput(
+          "Comment s'appelle le fichier JSON que vous voulez utiliser pour la correction ?\n"
+        );
+        await checkYtrackProgressJS(fileNameCheckJS, repoNameCheckJS);
+      case "7":
         console.log("Bye ! o/");
         return;
     }

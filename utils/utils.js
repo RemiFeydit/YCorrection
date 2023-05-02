@@ -1,6 +1,7 @@
 const fs = require("fs");
 const readline = require("readline-sync");
 const sqlite3 = require("sqlite3").verbose();
+const path = require("path");
 
 const readJsonFile = (file) => {
   let bufferData = fs.readFileSync(file);
@@ -9,9 +10,9 @@ const readJsonFile = (file) => {
   return data;
 };
 
-function isObject(obj) {
+const isObject = (obj) => {
   return obj !== undefined && obj !== null && obj.constructor == Object;
-}
+};
 
 const arraysEqual = (a, b) => {
   a = Array.isArray(a) ? a : [];
@@ -81,12 +82,25 @@ const convertDate = (strDate) => {
 };
 
 const convertJSONDatatoCSVData = (jsonData) => {
-  const keys = Object.keys(jsonData[0]);
+  const flattenObject = (obj, prefix = "") => {
+    return Object.keys(obj).reduce((acc, k) => {
+      const pre = prefix.length ? prefix + "." : "";
+      if (typeof obj[k] === "object") {
+        Object.assign(acc, flattenObject(obj[k], pre + k));
+      } else {
+        acc[pre + k] = obj[k];
+      }
+      return acc;
+    }, {});
+  };
 
-  // convertir les données JSON en format CSV
-  let csvData = keys.toString() + "\n";
-  for (let i = 0; i < jsonData.length; i++) {
-    csvData += Object.values(jsonData[i]).toString() + "\n";
+  const flattenData = jsonData.map((obj) => flattenObject(obj));
+  const keys = Object.keys(flattenData[0]);
+
+  let csvData = keys.join(",") + "\n";
+  for (let i = 0; i < flattenData.length; i++) {
+    const rowValues = keys.map((k) => flattenData[i][k]);
+    csvData += rowValues.join(",") + "\n";
   }
   return csvData;
 };
@@ -123,15 +137,35 @@ const executeQuery = (databaseFile, sqlQuery) => {
   });
 };
 
-function removeExtraSpaces(str) {
+const removeExtraSpaces = (str) => {
   return str
     .trim()
     .replace(/\s+/g, " ")
     .replace(/(\S+)\s+(\S+)/g, "$1$2");
-}
+};
 
-function isFileExists(filePath) {
+const isFileExists = (filePath) => {
   return fs.existsSync(filePath) ? true : false;
+};
+
+function findFile(filename, dir) {
+  const files = fs.readdirSync(dir); // obtenir les fichiers et les dossiers du répertoire
+  for (const file of files) {
+    const filePath = path.join(dir, file); // obtenir le chemin complet du fichier
+    const stat = fs.statSync(filePath); // obtenir les informations sur le fichier
+    if (stat.isDirectory()) {
+      // si c'est un dossier, parcourir récursivement les fichiers qu'il contient
+      const result = findFile(filename, filePath);
+      if (result) {
+        return result;
+      }
+    } else if (file === filename) {
+      // si c'est le fichier que nous cherchons, le renvoyer
+      return filePath;
+    }
+  }
+  // si le fichier n'a pas été trouvé, renvoyer null
+  return null;
 }
 
 module.exports = {
@@ -148,4 +182,5 @@ module.exports = {
   executeQuery,
   removeExtraSpaces,
   isFileExists,
+  findFile,
 };

@@ -1,6 +1,7 @@
 const shell = require("shelljs");
 const axios = require("axios");
 const { isFileExists, readJsonFile } = require("./utils");
+const { log } = require("shelljs/src/common");
 
 const cloneRepos = async (fileName, repoName) => {
   let missingRepo = [];
@@ -27,6 +28,9 @@ const cloneRepos = async (fileName, repoName) => {
               )}_${student.firstName}`
             )
           ) {
+            console.log(
+              `Clone du repo de ${student.lastName} ${student.firstName}`
+            );
             shell.exec(
               `git clone ${
                 response.data.clone_url
