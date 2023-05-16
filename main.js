@@ -1,25 +1,25 @@
-const { correctionExamSQL } = require("./utils/correctionExamSQL");
-const { checkYtrackName } = require("./utils/checkYtrackName");
-const { cloneRepos } = require("./utils/clone");
-const { correctionExamJS } = require("./utils/correctionExamJS");
+const {correctionExamSQL} = require("./utils/correctionExamSQL");
+const {checkYtrackName} = require("./utils/checkYtrackName");
+const {cloneRepos} = require("./utils/clone");
+const {correctionExamJS} = require("./utils/correctionExamJS");
 const csvToJSON = require("./utils/csvToJson");
 const utils = require("./utils/utils");
-const { checkYtrackProgressJS } = require("./utils/checkYtrackProgressJS");
+const {checkYtrackProgressJS} = require("./utils/checkYtrackProgress/checkYtrackProgressJS");
 
 const main = async () => {
   let menu = require("console-menu");
   menu(
     [
-      { hotkey: "1", title: "Converti le fichier CSV de l'HP en JSON" },
+      {hotkey: "1", title: "Converti le fichier CSV de l'HP en JSON"},
       {
         hotkey: "2",
         title: "Vérifie que tous les pseudos YTrack de la classe sont corrects",
       },
-      { hotkey: "3", title: "Clone tous les repos" },
-      { hotkey: "4", title: "Lance la correction de l'Exam de Javascript" },
-      { hotkey: "5", title: "Lance la correction de l'Exam de SQL" },
-      { hotkey: "6", title: "Lance le check d'un parcours YTrack" },
-      { hotkey: "7", title: "Quitter" },
+      {hotkey: "3", title: "Clone tous les repos"},
+      {hotkey: "4", title: "Lance la correction de l'Exam de Javascript"},
+      {hotkey: "5", title: "Lance la correction de l'Exam de SQL"},
+      {hotkey: "6", title: "Lance le check d'un parcours YTrack"},
+      {hotkey: "7", title: "Quitter"},
     ],
     {
       header: "YCorrection",

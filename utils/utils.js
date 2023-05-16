@@ -97,10 +97,10 @@ const convertJSONDatatoCSVData = (jsonData) => {
   const flattenData = jsonData.map((obj) => flattenObject(obj));
   const keys = Object.keys(flattenData[0]);
 
-  let csvData = keys.join(",") + "\n";
+  let csvData = keys.join(";") + "\n";
   for (let i = 0; i < flattenData.length; i++) {
     const rowValues = keys.map((k) => flattenData[i][k]);
-    csvData += rowValues.join(",") + "\n";
+    csvData += rowValues.join(";") + "\n";
   }
   return csvData;
 };
