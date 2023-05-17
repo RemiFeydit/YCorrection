@@ -1,12 +1,12 @@
 const shell = require("shelljs");
 const axios = require("axios");
-const { isFileExists, readJsonFile } = require("./utils");
-const { log } = require("shelljs/src/common");
+const {isFileExists, readJsonFile, findFile} = require("./utils");
+const {log} = require("shelljs/src/common");
 
 const cloneRepos = async (fileName, repoName) => {
   let missingRepo = [];
   return new Promise(async (resolve, reject) => {
-    const repo = readJsonFile(`./data/${fileName}.json`);
+    const repo = readJsonFile(`./data/json/${fileName}`);
     if (!isFileExists(`./repo`)) {
       console.log("create folder file");
       shell.mkdir("./repo");
@@ -22,7 +22,7 @@ const cloneRepos = async (fileName, repoName) => {
           }
           if (
             !isFileExists(
-              `repo/${fileName}_${repoName}/${student.lastName.replaceAll(
+              `repo/${fileName.replace(".json", "")}_${repoName}/${student.lastName.replaceAll(
                 " ",
                 "-"
               )}_${student.firstName}`
@@ -34,7 +34,7 @@ const cloneRepos = async (fileName, repoName) => {
             shell.exec(
               `git clone ${
                 response.data.clone_url
-              } repo/${fileName}_${repoName}/${student.lastName.replaceAll(
+              } repo/${fileName.replace(".json", "")}_${repoName}/${student.lastName.replaceAll(
                 " ",
                 "-"
               )}_${student.firstName}`
@@ -48,4 +48,4 @@ const cloneRepos = async (fileName, repoName) => {
     resolve(missingRepo);
   });
 };
-module.exports = { cloneRepos };
+module.exports = {cloneRepos};

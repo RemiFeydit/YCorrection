@@ -19,7 +19,6 @@ const inverseStringCorrection = (lastName, firstName, repoNameDir) => {
   console.log("\x1b[36m%s\x1b[0m", "inverse-string");
   let exercice1 = 0;
   try {
-    console.log(findFile("inverse-string.js", filePath))
     let file = findFile("inverse-string.js", filePath)
     if (file != null) {
       const inverseString = require(file);

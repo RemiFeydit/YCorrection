@@ -17,16 +17,17 @@ const {
 const correctionExamJS = (fileName) => {
   let isWin = process.platform === "win32";
   let filePath = isWin
-    ? `${__dirname.replace("\\utils", "")}\\data\\${fileName}.json`
-    : `${__dirname.replace("/utils", "")}/data/${fileName}.json`;
+    ? `${__dirname.replace("\\utils", "")}\\data\\json\\${fileName}`
+    : `${__dirname.replace("/utils", "")}/data/json/${fileName}`;
   console.log(filePath);
   return new Promise(async (resolve, reject) => {
     let res = [];
     let repoName = "eval-js";
+    fileName = fileName.replace(".json", "")
     const repos = readJsonFile(filePath);
     for (let repo of repos) {
       console.log("\x1b[31m%s\x1b[0m", `${repo.lastName} ${repo.firstName}`);
-      let grades = { lastName: repo.lastName.replaceAll(" ", "-") };
+      let grades = {lastName: repo.lastName.replaceAll(" ", "-")};
       await axios
         .get(
           `https://ytrack.learn.ynov.com/git/api/v1/repos/${repo.ytrackName}/${repoName}?token=${process.env.API_KEY}`
@@ -85,4 +86,4 @@ const correctionExamJS = (fileName) => {
   });
 };
 
-module.exports = { correctionExamJS };
+module.exports = {correctionExamJS};

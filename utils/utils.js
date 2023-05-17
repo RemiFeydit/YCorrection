@@ -149,23 +149,35 @@ const isFileExists = (filePath) => {
 };
 
 function findFile(filename, dir) {
-  const files = fs.readdirSync(dir); // obtenir les fichiers et les dossiers du répertoire
+  let arr = filename.split("/")
+  filename = arr.slice(-1)[0]
+  dir = `${dir}${arr.length > 1 ? `/${arr[0]}` : ""}`
+  const files = fs.readdirSync(dir);
   for (const file of files) {
-    const filePath = path.join(dir, file); // obtenir le chemin complet du fichier
-    const stat = fs.statSync(filePath); // obtenir les informations sur le fichier
+    const filePath = path.join(dir, file);
+    const stat = fs.statSync(filePath);
     if (stat.isDirectory()) {
-      // si c'est un dossier, parcourir récursivement les fichiers qu'il contient
       const result = findFile(filename, filePath);
       if (result) {
         return result;
       }
     } else if (file === filename) {
-      // si c'est le fichier que nous cherchons, le renvoyer
       return filePath;
     }
   }
-  // si le fichier n'a pas été trouvé, renvoyer null
   return null;
+}
+
+const getFilesFromFolder = (dir, fileExtension) => {
+  let filesData = fs.readdirSync(dir).filter((val) => val.includes(`.${fileExtension}`)).map((val, index) => {
+    return {hotkey: index + 1, title: val}
+  })
+  if (filesData.length == 0) {
+    return filesData
+  } else {
+    filesData.push({hotkey: filesData.length + 1, title: "Retour"})
+  }
+  return filesData
 }
 
 module.exports = {
@@ -183,4 +195,5 @@ module.exports = {
   removeExtraSpaces,
   isFileExists,
   findFile,
+  getFilesFromFolder
 };

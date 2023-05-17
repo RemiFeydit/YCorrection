@@ -1,15 +1,12 @@
 const fs = require("fs");
-const { isFileExists } = require("./utils");
+const {isFileExists} = require("./utils");
 require("dotenv").config();
 
 const csvToJSON = async (fileName) => {
   return new Promise((resolve, reject) => {
     let data = "";
-    if (!isFileExists("./data")) {
-      fs.mkdirSync("./data");
-    }
     try {
-      const csv = fs.readFileSync(`./data/${fileName}.csv`).toString();
+      const csv = fs.readFileSync(`./data/${fileName}`).toString();
       const lines = csv.split("\n");
       const result = [];
 
@@ -34,7 +31,7 @@ const csvToJSON = async (fileName) => {
       console.log(error);
       return;
     }
-    fs.writeFile(`./data/${fileName}.json`, data, (err) => {
+    fs.writeFile(`./data/json/${fileName.replace(".csv", "")}.json`, data, (err) => {
       if (err) {
         console.error(err);
         return;

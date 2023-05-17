@@ -3,10 +3,22 @@ const {checkYtrackName} = require("./utils/checkYtrackName");
 const {cloneRepos} = require("./utils/clone");
 const {correctionExamJS} = require("./utils/correctionExamJS");
 const csvToJSON = require("./utils/csvToJson");
-const utils = require("./utils/utils");
 const {checkYtrackProgressJS} = require("./utils/checkYtrackProgress/checkYtrackProgressJS");
+const fs = require("fs");
+const menu = require("console-menu");
+const {
+  isFileExists,
+  getFilesFromFolder,
+  displayBadYtrackName,
+  displayMissingRepo,
+  getUserInput
+} = require("./utils/utils");
 
 const main = async () => {
+  if (!isFileExists("./data")) {
+    fs.mkdirSync("./data");
+    fs.mkdirSync("./data/json");
+  }
   let menu = require("console-menu");
   menu(
     [
@@ -28,45 +40,91 @@ const main = async () => {
   ).then(async (item) => {
     switch (item.hotkey) {
       case "1":
-        let CSVName = utils.getUserInput(
-          "Comment s'appelle le fichier CSV que vous voulez convertir ?\n"
-        );
-        await csvToJSON(CSVName);
-        main();
+        const filesData = getFilesFromFolder("data", "csv")
+        if (filesData.length == 0) {
+          console.log("Il n'y a pas de fichiers dans le dossier data")
+          break
+          await main()
+        }
+        menu(
+          filesData,
+          {
+            header: "Quel est le fichier à convertir ?",
+            border: true,
+          }
+        ).then(async item => {
+          if (item.title == "Retour") {
+            await main()
+          } else {
+            await csvToJSON(item.title);
+            await main()
+          }
+        })
         break;
       case "2":
-        let JSONName = utils.getUserInput(
-          "Comment s'appelle le fichier JSON que vous voulez vérifier ?\n"
-        );
-        const badYtrackName = await checkYtrackName(JSONName);
-        utils.displayBadYtrackName(badYtrackName);
-        main();
+        let JSONFiles = getFilesFromFolder("data/json", "json")
+        menu(
+          JSONFiles,
+          {
+            header: "Quel est le fichier à utiliser ?",
+            border: true,
+          }
+        ).then(async item => {
+          if (item.title == "Retour") {
+            await main()
+          } else {
+            const badYtrackName = await checkYtrackName(item.title);
+            displayBadYtrackName(badYtrackName);
+            await main()
+          }
+        })
         break;
       case "3":
-        let promoName = utils.getUserInput(
-          "Comment s'appelle le fichier JSON que vous voulez utiliser ?\n"
-        );
-        let repoName = utils.getUserInput(
-          "Quel est le nom du repo que vous voulez cloner?\n"
-        );
-        let missingRepos = await cloneRepos(promoName, repoName);
-        utils.displayMissingRepo(missingRepos);
-        main();
+        let JSONFiles2 = getFilesFromFolder("data/json", "json")
+        menu(
+          JSONFiles2,
+          {
+            header: "Quel est le fichier JSON à utiliser ?",
+            border: true,
+          }
+        ).then(async item => {
+          if (item.title == "Retour") {
+            await main()
+          } else {
+            let repoName = getUserInput(
+              "Quel est le nom du repo que vous voulez cloner?\n"
+            );
+            let missingRepos = await cloneRepos(item.title, repoName);
+            displayMissingRepo(missingRepos);
+            await main();
+          }
+        })
         break;
       case "4":
-        let fileName = utils.getUserInput(
-          "Comment s'appelle le fichier JSON que vous voulez utiliser pour la correction ?\n"
-        );
-        await correctionExamJS(fileName);
+        let JSONFiles3 = getFilesFromFolder("data/json", "json")
+        menu(
+          JSONFiles3,
+          {
+            header: "Quel est le fichier JSON à utiliser pour la correction JS ?",
+            border: true,
+          }
+        ).then(async item => {
+          if (item.title == "Retour") {
+            await main()
+          } else {
+            await correctionExamJS(item.title);
+            await main();
+          }
+        })
         break;
       case "5":
-        let fileNameSQL = utils.getUserInput(
+        let fileNameSQL = getUserInput(
           "Comment s'appelle le fichier JSON que vous voulez utiliser pour la correction ?\n"
         );
         await correctionExamSQL(fileNameSQL);
         break;
       case "6":
-        let fileNameCheckJS = utils.getUserInput(
+        let fileNameCheckJS = getUserInput(
           "Comment s'appelle le fichier JSON que vous voulez utiliser pour la correction ?\n"
         );
         let repoNameCheckJS = utils.getUserInput(
