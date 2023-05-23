@@ -112,25 +112,55 @@ const main = async () => {
           if (item.title == "Retour") {
             await main()
           } else {
-            await correctionExamJS(item.title);
-            await main();
+            await correctionExamJS(item.title.replace(".json", ""));
           }
         })
         break;
       case "5":
-        let fileNameSQL = getUserInput(
-          "Comment s'appelle le fichier JSON que vous voulez utiliser pour la correction ?\n"
-        );
-        await correctionExamSQL(fileNameSQL);
+        let JSONFiles4 = getFilesFromFolder("data/json", "json")
+        menu(
+          JSONFiles4,
+          {
+            header: "Quel est le fichier JSON à utiliser pour la correction SQL ?",
+            border: true,
+          }
+        ).then(async item => {
+          if (item.title == "Retour") {
+            await main()
+          } else {
+            await correctionExamSQL(item.title.replace(".json", ""));
+          }
+        })
         break;
       case "6":
-        let fileNameCheckJS = getUserInput(
-          "Comment s'appelle le fichier JSON que vous voulez utiliser pour la correction ?\n"
-        );
-        let repoNameCheckJS = utils.getUserInput(
-          "Comment s'appelle le fichier JSON que vous voulez utiliser pour la correction ?\n"
-        );
-        await checkYtrackProgressJS(fileNameCheckJS, repoNameCheckJS);
+        let fileNameCheckYTrack = getFilesFromFolder("data/json", "json")
+        menu(
+          [{hotkey: "1", title: "JS", func: checkYtrackProgressJS},],
+          {
+            header: "Quel est le langage du parcours à vérifier ?\"",
+            border: true,
+          }
+        ).then(async item => {
+          if (item.title == "Retour") {
+            await main()
+          } else {
+            menu(fileNameCheckYTrack, {
+              header: "Quel est le fichier JSON à utiliser pour la vérification de la progression du parcours ?,
+              border: true
+            }).then(async item2 => {
+              if (item2.title == "Retour") {
+                await main()
+              } else {
+                let repoName = getUserInput(
+                  "Comment s'appelle le nom du repo à vérifier ?\n"
+                );
+                await item.func(item2.title.replace(".json", ""), repoName);
+              }
+            })
+
+          }
+        })
+        break;
       case "7":
         console.log("Bye ! o/");
         return;

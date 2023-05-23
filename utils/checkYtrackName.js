@@ -6,6 +6,7 @@ const checkYtrackName = async (fileName) => {
   let missingRepo = [];
   return new Promise(async (resolve, reject) => {
     const repo = readJsonFile(`./data/json/${fileName}`);
+    console.log("Vérification en cours...")
     for (const student of repo) {
       await axios
         .get(

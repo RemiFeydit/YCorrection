@@ -1,6 +1,5 @@
 const {
-  readJsonFile,
-  convertJSONDatatoCSVData,
+  readJsonFile, convertJSONDatatoXLSXData,
 } = require("../utils");
 const axios = require("axios");
 const fs = require("fs");
@@ -11,8 +10,8 @@ const {JSData, JSLoop, JSFind, JSTime, JSCallMeMaybe, JSDom, JSObject} = require
 const checkYtrackProgressJS = (fileName, repoName) => {
   let isWin = process.platform === "win32";
   let filePath = isWin
-    ? `${__dirname.replace("\\utils\\checkYtrackProgress", "")}\\data\\${fileName}.json`
-    : `${__dirname.replace("/utils/checkYtrackProgress", "")}/data/${fileName}.json`;
+    ? `${__dirname.replace("\\utils\\checkYtrackProgress", "")}\\data\\json\\${fileName}.json`
+    : `${__dirname.replace("/utils/checkYtrackProgress", "")}/data/json/${fileName}.json`;
   return new Promise(async (resolve, reject) => {
     let quests = ["data", "loop", "find", "time", "call-me-maybe", "dom", "object"]
     let res = [];
@@ -93,11 +92,11 @@ const checkYtrackProgressJS = (fileName, repoName) => {
       res.push(progress);
       resolve(res);
     }
-    let csvData = convertJSONDatatoCSVData(res);
+    let XLSXData = convertJSONDatatoXLSXData(res);
     if (!fs.existsSync(`./results`)) {
       shell.exec(`mkdir results`);
     }
-    fs.writeFileSync(`./results/${fileName}_YTrackProgressJS.csv`, csvData);
+    fs.writeFileSync(`./results/${fileName}_YTrackProgressJS.xlsx`, XLSXData);
     console.clear();
     console.log("Correction terminé");
   });

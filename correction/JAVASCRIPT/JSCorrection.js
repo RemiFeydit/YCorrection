@@ -6,6 +6,7 @@ const {
 } = require("../../utils/utils");
 
 const inverseStringCorrection = (lastName, firstName, repoNameDir) => {
+  console.log(repoNameDir)
   let isWin = process.platform === "win32";
   let filePath = isWin
     ? `${__dirname.replace(

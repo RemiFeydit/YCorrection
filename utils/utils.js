@@ -2,6 +2,7 @@ const fs = require("fs");
 const readline = require("readline-sync");
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
+const XLSX = require('xlsx');
 
 const readJsonFile = (file) => {
   let bufferData = fs.readFileSync(file);
@@ -81,7 +82,7 @@ const convertDate = (strDate) => {
   return formatter.format(date);
 };
 
-const convertJSONDatatoCSVData = (jsonData) => {
+const convertJSONDatatoXLSXData = (jsonData) => {
   const flattenObject = (obj, prefix = "") => {
     return Object.keys(obj).reduce((acc, k) => {
       const pre = prefix.length ? prefix + "." : "";
@@ -97,12 +98,12 @@ const convertJSONDatatoCSVData = (jsonData) => {
   const flattenData = jsonData.map((obj) => flattenObject(obj));
   const keys = Object.keys(flattenData[0]);
 
-  let csvData = keys.join(";") + "\n";
-  for (let i = 0; i < flattenData.length; i++) {
-    const rowValues = keys.map((k) => flattenData[i][k]);
-    csvData += rowValues.join(";") + "\n";
-  }
-  return csvData;
+  const workbook = XLSX.utils.book_new();
+  const worksheet = XLSX.utils.json_to_sheet(flattenData, {header: keys});
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+  const xlsxData = XLSX.write(workbook, {type: "buffer", bookType: "xlsx"});
+  return xlsxData;
 };
 
 const executeQuery = (databaseFile, sqlQuery) => {
@@ -190,7 +191,7 @@ module.exports = {
   displayMissingRepo,
   getUserInput,
   convertDate,
-  convertJSONDatatoCSVData,
+  convertJSONDatatoXLSXData,
   executeQuery,
   removeExtraSpaces,
   isFileExists,
