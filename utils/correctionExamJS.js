@@ -9,16 +9,15 @@ const {
   extractObjectCorrection,
 } = require("../correction/JAVASCRIPT/JSCorrection");
 const {
-  convertJSONDatatoCSVData,
   convertDate,
-  readJsonFile,
+  readJsonFile, convertJSONDatatoXLSXData,
 } = require("./utils");
 
 const correctionExamJS = (fileName) => {
   let isWin = process.platform === "win32";
   let filePath = isWin
-    ? `${__dirname.replace("\\utils", "")}\\data\\${fileName}.json`
-    : `${__dirname.replace("/utils", "")}/data/${fileName}.json`;
+    ? `${__dirname.replace("\\utils", "")}\\data\\json\\${fileName}.json`
+    : `${__dirname.replace("/utils", "")}/data/json/${fileName}.json`;
   console.log(filePath);
   return new Promise(async (resolve, reject) => {
     let res = [];
@@ -26,7 +25,7 @@ const correctionExamJS = (fileName) => {
     const repos = readJsonFile(filePath);
     for (let repo of repos) {
       console.log("\x1b[31m%s\x1b[0m", `${repo.lastName} ${repo.firstName}`);
-      let grades = { lastName: repo.lastName.replaceAll(" ", "-") };
+      let grades = {lastName: repo.lastName.replaceAll(" ", "-")};
       await axios
         .get(
           `https://ytrack.learn.ynov.com/git/api/v1/repos/${repo.ytrackName}/${repoName}?token=${process.env.API_KEY}`
@@ -75,14 +74,14 @@ const correctionExamJS = (fileName) => {
       res.push(grades);
       resolve(res);
     }
-    let csvData = convertJSONDatatoCSVData(res);
+    let XLSXData = convertJSONDatatoXLSXData(res);
     if (!fs.existsSync(`./results`)) {
       shell.exec(`mkdir results`);
     }
-    fs.writeFileSync(`./results/${fileName}_jsResults.csv`, csvData);
+    fs.writeFileSync(`./results/${fileName}_jsResults.xlsx`, XLSXData);
     console.clear();
     console.log("Correction terminé");
   });
 };
 
-module.exports = { correctionExamJS };
+module.exports = {correctionExamJS};

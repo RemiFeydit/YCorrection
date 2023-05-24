@@ -23,8 +23,7 @@ const {
 const {
   readJsonFile,
   convertDate,
-  convertJSONDatatoCSVData,
-  isFileExists,
+  isFileExists, convertJSONDatatoXLSXData,
 } = require("./utils");
 
 const correctionExamSQL = (fileName) => {
@@ -32,10 +31,10 @@ const correctionExamSQL = (fileName) => {
     let res = [];
     let repoName = "projet-sql-B2";
     const repos = readJsonFile(
-      `${__dirname.replace("/utils", "")}/data/${fileName}.json`
+      `${__dirname.replace("/utils", "")}/data/json/${fileName}.json`
     );
     for (let repo of repos) {
-      let grades = { lastName: repo.lastName, firstName: repo.firstName };
+      let grades = {lastName: repo.lastName, firstName: repo.firstName};
       await axios
         .get(
           `https://ytrack.learn.ynov.com/git/api/v1/repos/${repo.ytrackName}/${repoName}?token=${process.env.API_KEY}`
@@ -160,14 +159,14 @@ const correctionExamSQL = (fileName) => {
       res.push(grades);
       resolve(res);
     }
-    let csvData = convertJSONDatatoCSVData(res);
+    let XLSXData = convertJSONDatatoXLSXData(res);
     if (!isFileExists(`./results`)) {
       shell.exec(`mkdir ./results`);
     }
-    fs.writeFileSync(`./results/${fileName}_SQLResults.csv`, csvData);
+    fs.writeFileSync(`./results/${fileName}_SQLResults.xlsx`, XLSXData);
     console.clear();
     console.log("Correction terminé");
   });
 };
 
-module.exports = { correctionExamSQL };
+module.exports = {correctionExamSQL};

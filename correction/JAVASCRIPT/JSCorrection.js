@@ -2,25 +2,27 @@ const gradeCalculator = require("../../utils/gradeCalculator");
 const {
   isFileExists,
   compareArrays,
-  compareObjects,
+  compareObjects, findFile,
 } = require("../../utils/utils");
 
 const inverseStringCorrection = (lastName, firstName, repoNameDir) => {
+  console.log(repoNameDir)
   let isWin = process.platform === "win32";
   let filePath = isWin
     ? `${__dirname.replace(
-        "correction\\JAVASCRIPT",
-        ""
-      )}repo\\${repoNameDir}\\${lastName}_${firstName}\\inverse-string.js`
+      "correction\\JAVASCRIPT",
+      ""
+    )}repo\\${repoNameDir}\\${lastName}_${firstName}`
     : `${__dirname.replace(
-        "correction/JAVASCRIPT",
-        ""
-      )}repo/${repoNameDir}/${lastName}_${firstName}/inverse-string.js`;
+      "correction/JAVASCRIPT",
+      ""
+    )}repo/${repoNameDir}/${lastName}_${firstName}`;
   console.log("\x1b[36m%s\x1b[0m", "inverse-string");
   let exercice1 = 0;
-  if (isFileExists(filePath)) {
-    try {
-      const inverseString = require(filePath);
+  try {
+    let file = findFile("inverse-string.js", filePath)
+    if (file != null) {
+      const inverseString = require(file);
       exercice1 += gradeCalculator(inverseString, "", "", 0.5);
       exercice1 += gradeCalculator(
         inverseString,
@@ -37,9 +39,9 @@ const inverseStringCorrection = (lastName, firstName, repoNameDir) => {
       exercice1 += gradeCalculator(inverseString, "Hello", "Hello", 0.75);
       exercice1 += gradeCalculator(inverseString, " Hey", "Hey", 0.75);
       exercice1 += gradeCalculator(inverseString, undefined, "", 0.5);
-    } catch (error) {
-      console.log(error);
     }
+  } catch (error) {
+    console.log(error);
   }
   return exercice1;
 };
@@ -48,18 +50,19 @@ const manipArrayCorrection = (lastName, firstName, repoNameDir) => {
   let isWin = process.platform === "win32";
   let filePath = isWin
     ? `${__dirname.replace(
-        "correction\\JAVASCRIPT",
-        ""
-      )}repo\\${repoNameDir}\\${lastName}_${firstName}\\manip-array.js`
+      "correction\\JAVASCRIPT",
+      ""
+    )}repo\\${repoNameDir}\\${lastName}_${firstName}`
     : `${__dirname.replace(
-        "correction/JAVASCRIPT",
-        ""
-      )}repo/${repoNameDir}/${lastName}_${firstName}/manip-array.js`;
+      "correction/JAVASCRIPT",
+      ""
+    )}repo/${repoNameDir}/${lastName}_${firstName}`;
   console.log("\x1b[36m%s\x1b[0m", "manip-array");
   let exercice2 = 0;
-  if (isFileExists(filePath)) {
-    try {
-      const manipArray = require(filePath);
+  try {
+    let file = findFile("manip-array.js", filePath)
+    if (file != null) {
+      const manipArray = require(file);
       exercice2 += gradeCalculator(manipArray, [[]], [], 0.25);
       exercice2 += gradeCalculator(
         manipArray,
@@ -96,7 +99,9 @@ const manipArrayCorrection = (lastName, firstName, repoNameDir) => {
         1
       );
       exercice2 += gradeCalculator(manipArray, undefined, [], 0.5);
-    } catch (error) {}
+
+    }
+  } catch (error) {
   }
   return exercice2;
 };
@@ -105,18 +110,19 @@ const lettersOccurenceCorrection = (lastName, firstName, repoNameDir) => {
   let isWin = process.platform === "win32";
   let filePath = isWin
     ? `${__dirname.replace(
-        "correction\\JAVASCRIPT",
-        ""
-      )}repo\\${repoNameDir}\\${lastName}_${firstName}\\letters-occurence.js`
+      "correction\\JAVASCRIPT",
+      ""
+    )}repo\\${repoNameDir}\\${lastName}_${firstName}`
     : `${__dirname.replace(
-        "correction/JAVASCRIPT",
-        ""
-      )}repo/${repoNameDir}/${lastName}_${firstName}/letters-occurence.js`;
+      "correction/JAVASCRIPT",
+      ""
+    )}repo/${repoNameDir}/${lastName}_${firstName}`;
   console.log("\x1b[36m%s\x1b[0m", "letters-occurence");
   let exercice3 = 0;
-  if (isFileExists(filePath)) {
-    try {
-      const lettersOccurence = require(filePath);
+  try {
+    let file = findFile("letters-occurence.js", filePath)
+    if (file != null) {
+      const lettersOccurence = require(file);
       exercice3 += gradeCalculator(lettersOccurence, "", {}, 0.25);
       exercice3 += gradeCalculator(lettersOccurence, null, {}, 0.25);
       exercice3 += gradeCalculator(lettersOccurence, NaN, {}, 0.25);
@@ -205,7 +211,8 @@ const lettersOccurenceCorrection = (lastName, firstName, repoNameDir) => {
         },
         0.5
       );
-    } catch (error) {}
+    }
+  } catch (error) {
   }
   return exercice3;
 };
@@ -214,18 +221,19 @@ const TCGBattleCorrection = (lastName, firstName, repoNameDir) => {
   let isWin = process.platform === "win32";
   let filePath = isWin
     ? `${__dirname.replace(
-        "correction\\JAVASCRIPT",
-        ""
-      )}repo\\${repoNameDir}\\${lastName}_${firstName}\\tcg-battle.js`
+      "correction\\JAVASCRIPT",
+      ""
+    )}repo\\${repoNameDir}\\${lastName}_${firstName}`
     : `${__dirname.replace(
-        "correction/JAVASCRIPT",
-        ""
-      )}repo/${repoNameDir}/${lastName}_${firstName}/tcg-battle.js`;
+      "correction/JAVASCRIPT",
+      ""
+    )}repo/${repoNameDir}/${lastName}_${firstName}`;
   console.log("\x1b[36m%s\x1b[0m", "tcg-battle");
   let exercice4 = 0;
-  if (isFileExists(filePath)) {
-    try {
-      const TCGBattle = require(filePath);
+  try {
+    let file = findFile("tcg-battle.js", filePath)
+    if (file != null) {
+      const TCGBattle = require(file);
       exercice4 += gradeCalculator(
         TCGBattle,
         ["2 30 27", "9 38 1"],
@@ -263,7 +271,8 @@ const TCGBattleCorrection = (lastName, firstName, repoNameDir) => {
         "Perdant",
         0.75
       );
-    } catch (error) {}
+    }
+  } catch (error) {
   }
   return exercice4;
 };
@@ -272,24 +281,25 @@ const extractObjectCorrection = (lastName, firstName, repoNameDir) => {
   let isWin = process.platform === "win32";
   let filePath = isWin
     ? `${__dirname.replace(
-        "correction\\JAVASCRIPT",
-        ""
-      )}repo\\${repoNameDir}\\${lastName}_${firstName}\\extract-object.js`
+      "correction\\JAVASCRIPT",
+      ""
+    )}repo\\${repoNameDir}\\${lastName}_${firstName}`
     : `${__dirname.replace(
-        "correction/JAVASCRIPT",
-        ""
-      )}repo/${repoNameDir}/${lastName}_${firstName}/extract-object.js`;
+      "correction/JAVASCRIPT",
+      ""
+    )}repo/${repoNameDir}/${lastName}_${firstName}`;
   console.log("\x1b[36m%s\x1b[0m", "extract-object");
   let exercice5 = 0;
-  if (isFileExists(filePath)) {
-    try {
-      const extractObject = require(filePath);
+  try {
+    let file = findFile("extract-object.js", filePath)
+    if (file != null) {
+      const extractObject = require(file);
       if (
         compareArrays(
           extractObject(
             `Je ne vais pas taffer comme la Chine {"Valentin":"prenom","Sullyvan":"nom"} parce que taffer comme la Chine ça fait monter le taux de Co2`
           ),
-          [{ prenom: "Valentin", nom: "Sullyvan" }]
+          [{prenom: "Valentin", nom: "Sullyvan"}]
         )
       ) {
         exercice5 += 1;
@@ -300,9 +310,9 @@ const extractObjectCorrection = (lastName, firstName, repoNameDir) => {
             `Hello there {"hello":2,"a":3} comment ça va ? {"a":1,"z":2} {"hello":"World","abc":"def"}`
           ),
           [
-            { 2: "hello", 3: "a" },
-            { 1: "a", 2: "z" },
-            { World: "hello", def: "abc" },
+            {2: "hello", 3: "a"},
+            {1: "a", 2: "z"},
+            {World: "hello", def: "abc"},
           ]
         )
       ) {
@@ -314,9 +324,9 @@ const extractObjectCorrection = (lastName, firstName, repoNameDir) => {
             `Hello there {"hello":2,"a":3} comment ça va ? {"a":1,"z":2} {"hello":"World","abc":"def"}`
           ),
           [
-            { 2: "hello", 3: "a" },
-            { 1: "a", 2: "z" },
-            { World: "hello", def: "abc" },
+            {2: "hello", 3: "a"},
+            {1: "a", 2: "z"},
+            {World: "hello", def: "abc"},
           ]
         )
       ) {
@@ -329,9 +339,9 @@ const extractObjectCorrection = (lastName, firstName, repoNameDir) => {
       if (compareArrays(extractObject(``), [])) {
         exercice5 += 0.5;
       }
-    } catch (error) {
-      console.log(error);
     }
+  } catch (error) {
+    console.log(error);
   }
   return exercice5;
 };

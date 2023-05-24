@@ -1,6 +1,8 @@
 const fs = require("fs");
 const readline = require("readline-sync");
 const sqlite3 = require("sqlite3").verbose();
+const path = require("path");
+const XLSX = require('xlsx');
 
 const readJsonFile = (file) => {
   let bufferData = fs.readFileSync(file);
@@ -9,9 +11,9 @@ const readJsonFile = (file) => {
   return data;
 };
 
-function isObject(obj) {
+const isObject = (obj) => {
   return obj !== undefined && obj !== null && obj.constructor == Object;
-}
+};
 
 const arraysEqual = (a, b) => {
   a = Array.isArray(a) ? a : [];
@@ -80,15 +82,28 @@ const convertDate = (strDate) => {
   return formatter.format(date);
 };
 
-const convertJSONDatatoCSVData = (jsonData) => {
-  const keys = Object.keys(jsonData[0]);
+const convertJSONDatatoXLSXData = (jsonData) => {
+  const flattenObject = (obj, prefix = "") => {
+    return Object.keys(obj).reduce((acc, k) => {
+      const pre = prefix.length ? prefix + "." : "";
+      if (typeof obj[k] === "object") {
+        Object.assign(acc, flattenObject(obj[k], pre + k));
+      } else {
+        acc[pre + k] = obj[k];
+      }
+      return acc;
+    }, {});
+  };
 
-  // convertir les données JSON en format CSV
-  let csvData = keys.toString() + "\n";
-  for (let i = 0; i < jsonData.length; i++) {
-    csvData += Object.values(jsonData[i]).toString() + "\n";
-  }
-  return csvData;
+  const flattenData = jsonData.map((obj) => flattenObject(obj));
+  const keys = Object.keys(flattenData[0]);
+
+  const workbook = XLSX.utils.book_new();
+  const worksheet = XLSX.utils.json_to_sheet(flattenData, {header: keys});
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+  const xlsxData = XLSX.write(workbook, {type: "buffer", bookType: "xlsx"});
+  return xlsxData;
 };
 
 const executeQuery = (databaseFile, sqlQuery) => {
@@ -123,15 +138,47 @@ const executeQuery = (databaseFile, sqlQuery) => {
   });
 };
 
-function removeExtraSpaces(str) {
+const removeExtraSpaces = (str) => {
   return str
     .trim()
     .replace(/\s+/g, " ")
     .replace(/(\S+)\s+(\S+)/g, "$1$2");
+};
+
+const isFileExists = (filePath) => {
+  return fs.existsSync(filePath) ? true : false;
+};
+
+function findFile(filename, dir) {
+  let arr = filename.split("/")
+  filename = arr.slice(-1)[0]
+  dir = `${dir}${arr.length > 1 ? `/${arr[0]}` : ""}`
+  const files = fs.readdirSync(dir);
+  for (const file of files) {
+    const filePath = path.join(dir, file);
+    const stat = fs.statSync(filePath);
+    if (stat.isDirectory()) {
+      const result = findFile(filename, filePath);
+      if (result) {
+        return result;
+      }
+    } else if (file === filename) {
+      return filePath;
+    }
+  }
+  return null;
 }
 
-function isFileExists(filePath) {
-  return fs.existsSync(filePath) ? true : false;
+const getFilesFromFolder = (dir, fileExtension) => {
+  let filesData = fs.readdirSync(dir).filter((val) => val.includes(`.${fileExtension}`)).map((val, index) => {
+    return {hotkey: index + 1, title: val}
+  })
+  if (filesData.length == 0) {
+    return filesData
+  } else {
+    filesData.push({hotkey: filesData.length + 1, title: "Retour"})
+  }
+  return filesData
 }
 
 module.exports = {
@@ -144,8 +191,10 @@ module.exports = {
   displayMissingRepo,
   getUserInput,
   convertDate,
-  convertJSONDatatoCSVData,
+  convertJSONDatatoXLSXData,
   executeQuery,
   removeExtraSpaces,
   isFileExists,
+  findFile,
+  getFilesFromFolder
 };

@@ -1,11 +1,12 @@
 const axios = require("axios");
-const { readJsonFile, removeExtraSpaces } = require("./utils");
+const {readJsonFile, removeExtraSpaces} = require("./utils");
 require("dotenv").config();
 
 const checkYtrackName = async (fileName) => {
   let missingRepo = [];
   return new Promise(async (resolve, reject) => {
-    const repo = readJsonFile(`./data/${fileName}.json`);
+    const repo = readJsonFile(`./data/json/${fileName}`);
+    console.log("Vérification en cours...")
     for (const student of repo) {
       await axios
         .get(
@@ -27,4 +28,4 @@ const checkYtrackName = async (fileName) => {
     resolve(missingRepo);
   });
 };
-module.exports = { checkYtrackName };
+module.exports = {checkYtrackName};
