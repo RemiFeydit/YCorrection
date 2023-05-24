@@ -145,7 +145,7 @@ const main = async () => {
             await main()
           } else {
             menu(fileNameCheckYTrack, {
-              header: "Quel est le fichier JSON à utiliser pour la vérification de la progression du parcours ?,
+              header: "Quel est le fichier JSON à utiliser pour la vérification de la progression du parcours ?",
               border: true
             }).then(async item2 => {
               if (item2.title == "Retour") {

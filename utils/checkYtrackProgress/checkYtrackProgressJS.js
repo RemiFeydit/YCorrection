@@ -4,7 +4,7 @@ const {
 const axios = require("axios");
 const fs = require("fs");
 const shell = require("shelljs");
-const {JSCheckQuest} = require("../../correction/JAVASCRIPT/JSCheck");
+const {questChecker} = require("../questChecker");
 const {JSData, JSLoop, JSFind, JSTime, JSCallMeMaybe, JSDom, JSObject} = require("../dataYTrack/JSQuests");
 
 const checkYtrackProgressJS = (fileName, repoName) => {
@@ -28,14 +28,14 @@ const checkYtrackProgressJS = (fileName, repoName) => {
         progress[quest] = 0;
       }
       console.log("\x1b[31m%s\x1b[0m", `${progress.lastName}`);
-      progress.data = JSCheckQuest(
+      progress.data = questChecker(
         JSData,
         progress.lastName,
         repo.firstName,
         `${fileName}_${repoName}`,
         16
       );
-      progress.loop = JSCheckQuest(
+      progress.loop = questChecker(
         JSLoop,
         progress.lastName,
         repo.firstName,
@@ -43,7 +43,7 @@ const checkYtrackProgressJS = (fileName, repoName) => {
         13
       );
 
-      progress.find = JSCheckQuest(
+      progress.find = questChecker(
         JSFind,
         progress.lastName,
         repo.firstName,
@@ -51,7 +51,7 @@ const checkYtrackProgressJS = (fileName, repoName) => {
         5
       );
 
-      progress.time = JSCheckQuest(
+      progress.time = questChecker(
         JSTime,
         progress.lastName,
         repo.firstName,
@@ -59,7 +59,7 @@ const checkYtrackProgressJS = (fileName, repoName) => {
         7
       );
 
-      progress["call-me-maybe"] = JSCheckQuest(
+      progress["call-me-maybe"] = questChecker(
         JSCallMeMaybe,
         progress.lastName,
         repo.firstName,
@@ -67,7 +67,7 @@ const checkYtrackProgressJS = (fileName, repoName) => {
         11
       );
 
-      progress.dom = JSCheckQuest(
+      progress.dom = questChecker(
         JSDom,
         progress.lastName,
         repo.firstName,
@@ -75,7 +75,7 @@ const checkYtrackProgressJS = (fileName, repoName) => {
         10
       );
 
-      progress.object = JSCheckQuest(
+      progress.object = questChecker(
         JSObject,
         progress.lastName,
         repo.firstName,
