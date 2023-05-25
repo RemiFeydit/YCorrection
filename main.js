@@ -13,6 +13,7 @@ const {
   displayMissingRepo,
   getUserInput
 } = require("./utils/utils");
+const {checkYtrackProgressGoLang} = require("./utils/checkYtrackProgress/checkYtrackProgressGoLang");
 
 const main = async () => {
   if (!isFileExists("./data")) {
@@ -135,7 +136,10 @@ const main = async () => {
       case "6":
         let fileNameCheckYTrack = getFilesFromFolder("data/json", "json")
         menu(
-          [{hotkey: "1", title: "JS", func: checkYtrackProgressJS},],
+          [
+            {hotkey: "1", title: "JS", func: checkYtrackProgressJS},
+            {hotkey: "2", title: "GoLang", func: checkYtrackProgressGoLang},
+          ],
           {
             header: "Quel est le langage du parcours à vérifier ?\"",
             border: true,
