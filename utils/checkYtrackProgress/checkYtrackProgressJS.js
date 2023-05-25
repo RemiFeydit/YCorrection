@@ -6,6 +6,7 @@ const fs = require("fs");
 const shell = require("shelljs");
 const {questChecker} = require("../questChecker");
 const {JSData, JSLoop, JSFind, JSTime, JSCallMeMaybe, JSDom, JSObject} = require("../dataYTrack/JSQuests");
+const {cloneRepos} = require("../cloneRepos");
 
 const checkYtrackProgressJS = (fileName, repoName) => {
   let isWin = process.platform === "win32";
@@ -13,6 +14,7 @@ const checkYtrackProgressJS = (fileName, repoName) => {
     ? `${__dirname.replace("\\utils\\checkYtrackProgress", "")}\\data\\json\\${fileName}.json`
     : `${__dirname.replace("/utils/checkYtrackProgress", "")}/data/json/${fileName}.json`;
   return new Promise(async (resolve, reject) => {
+    await cloneRepos(`${fileName}.json`, `${repoName}`)
     let quests = ["data", "loop", "find", "time", "call-me-maybe", "dom", "object"]
     let res = [];
     const repos = readJsonFile(filePath);
@@ -94,9 +96,13 @@ const checkYtrackProgressJS = (fileName, repoName) => {
     }
     let XLSXData = convertJSONDatatoXLSXData(res);
     if (!fs.existsSync(`./results`)) {
-      shell.exec(`mkdir results`);
+      fs.mkdirSync(`./results`);
     }
-    fs.writeFileSync(`./results/${fileName}_YTrackProgressJS.xlsx`, XLSXData);
+    if (!fs.existsSync("./results/YtrackProgress")) {
+      fs.mkdirSync("./results/YtrackProgress");
+    }
+    fs.writeFileSync(`./results/YtrackProgress/${fileName}_YTrackProgressJS.xlsx`, XLSXData);
+    fs.rmSync(`./repo/${fileName}_${repoName}`, {recursive: true, force: true});
     console.clear();
     console.log("Correction terminé");
   });
