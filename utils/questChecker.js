@@ -9,14 +9,13 @@ const questChecker = (
   let count = 0;
   for (let file of listExercise) {
     try {
-      let foundFile = findFile(file, `repo/${repoNameDir}/${lastName}_${firstName}`);
+      let foundFile = findFile(file, `./repo/${repoNameDir}/${lastName}_${firstName}`);
       if (foundFile != null) {
         count++;
       } else {
         break;
       }
     } catch (e) {
-      console.log(e)
     }
   }
   return {
