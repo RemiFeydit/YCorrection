@@ -17,6 +17,7 @@ const {checkYtrackProgressGoLang} = require("./utils/checkYtrackProgress/checkYt
 const {checkYtrackProgressPHP} = require("./utils/checkYtrackProgress/checkYtrackProgressPHP");
 const {checkYtrackProgressCSharp} = require("./utils/checkYtrackProgress/checkYtrackProgressCSharp");
 const {checkYtrackProgressSQL} = require("./utils/checkYtrackProgress/checkYtrackProgressSQL");
+const {checkYtrackProgressPython} = require("./utils/checkYtrackProgress/checkYtrackProgressPython");
 
 const main = async () => {
   if (!isFileExists("./data")) {
@@ -145,7 +146,8 @@ const main = async () => {
             {hotkey: "3", title: "PHP", func: checkYtrackProgressPHP},
             {hotkey: "4", title: "C#", func: checkYtrackProgressCSharp},
             {hotkey: "5", title: "SQL", func: checkYtrackProgressSQL},
-            {hotkey: "6", title: "Retour", func: undefined},
+            {hotkey: "6", title: "Python", func: checkYtrackProgressPython},
+            {hotkey: "X", title: "Retour", func: undefined},
           ],
           {
             header: "Quel est le langage du parcours à vérifier ?\"",
