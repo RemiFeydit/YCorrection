@@ -3,7 +3,6 @@ const {
 } = require("../utils");
 const axios = require("axios");
 const fs = require("fs");
-const shell = require("shelljs");
 const {questChecker} = require("../questChecker");
 const {PHPQuest1, PHPQuest2, PHPQuest4, PHPQuest3, PHPQuest5} = require("../dataYTrack/PHPQuests");
 const {cloneRepos} = require("../cloneRepos");
@@ -25,7 +24,7 @@ const checkYtrackProgressPHP = (fileName, repoName) => {
         )
         .catch(() => {
         });
-      for (let i = 1; i <= 4; i++) {
+      for (let i = 1; i <= 5; i++) {
         progress[`quest${i}`] = 0;
       }
       console.log("\x1b[31m%s\x1b[0m", `${progress.lastName}`);
