@@ -59,10 +59,8 @@ const checkYtrackProgressCSharp = (fileName, repoName) => {
         5
       );
 
-      progress.total = `${Math.round(((progress.quest1.required + progress.quest1.bonus) +
-        (progress.quest2.required + progress.quest2.bonus) +
-        (progress.quest3.required + progress.quest3.bonus) +
-        (progress.quest4.required + progress.quest4.bonus)) / 31 * 100)} %`
+      progress.total = `${Math.round(Object.keys(progress).slice(1).reduce((accumulator, key) => accumulator + progress[key]["required"] + progress[key]["bonus"], 0) / 31 * 100)} %`
+
       res.push(progress);
       resolve(res);
     }

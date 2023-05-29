@@ -1,6 +1,7 @@
 const shell = require("shelljs");
 const axios = require("axios");
-const {isFileExists, readJsonFile, findFile} = require("./utils");
+const {isFileExists, readJsonFile} = require("./utils");
+const fs = require("fs");
 
 const cloneRepos = async (fileName, repoName) => {
   let missingRepo = [];
@@ -8,10 +9,7 @@ const cloneRepos = async (fileName, repoName) => {
     const repo = readJsonFile(`./data/json/${fileName}`);
     if (!isFileExists(`./repo`)) {
       console.log("create folder file");
-      shell.mkdir("./repo");
-    }
-    if (!isFileExists(`repo/${fileName}_${repoName}`)) {
-      shell.mkdir(`./${fileName.replace(".json", "")}_${repoName}`);
+      fs.mkdirSync("./repo");
     }
     for (const student of repo) {
       await axios
@@ -19,7 +17,6 @@ const cloneRepos = async (fileName, repoName) => {
           `https://ytrack.learn.ynov.com/git/api/v1/repos/${student.ytrackName}/${repoName}?token=${process.env.API_KEY}`
         )
         .then((response) => {
-
           if (
             !isFileExists(
               `repo/${fileName.replace(".json", "")}_${repoName}/${student.lastName.replaceAll(

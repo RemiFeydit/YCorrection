@@ -93,14 +93,8 @@ const checkYtrackProgressGoLang = (fileName, repoName) => {
         `${fileName}_${repoName}`,
         7
       );
-      progress.total = `${Math.round(((progress.quest1.required + progress.quest1.bonus) +
-        (progress.quest2.required + progress.quest2.bonus) +
-        (progress.quest3.required + progress.quest3.bonus) +
-        (progress.quest4.required + progress.quest4.bonus) +
-        (progress.quest5.required + progress.quest5.bonus) +
-        (progress.quest6.required + progress.quest6.bonus) +
-        (progress.quest7.required + progress.quest7.bonus) +
-        (progress.quest8.required + progress.quest8.bonus)) / 63 * 100)} %`
+      progress.total = `${Math.round(Object.keys(progress).slice(1).reduce((accumulator, key) => accumulator + progress[key]["required"] + progress[key]["bonus"], 0) / 63 * 100)} %`
+
       res.push(progress);
       resolve(res);
     }
