@@ -25,7 +25,6 @@ const main = async () => {
     fs.mkdirSync("./data");
     fs.mkdirSync("./data/json");
   }
-  let menu = require("console-menu");
   menu(
     [
       {hotkey: "1", title: "Converti le fichier CSV de l'HP en JSON"},
