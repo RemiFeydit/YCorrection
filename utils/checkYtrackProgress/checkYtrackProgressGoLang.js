@@ -108,7 +108,7 @@ const checkYtrackProgressGoLang = (fileName, repoName) => {
     fs.writeFileSync(`./results/YtrackProgress/${fileName}_YTrackProgressGoLang.xlsx`, XLSXData);
     fs.rmSync(`./repo/${fileName}_${repoName}`, {recursive: true, force: true});
     console.clear();
-    console.log("Correction terminé");
+    console.log("Vérification du parcours GoLang terminé");
   });
 };
 module.exports = {checkYtrackProgressGoLang};

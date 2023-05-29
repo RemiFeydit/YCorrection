@@ -74,7 +74,7 @@ const checkYtrackProgressCSharp = (fileName, repoName) => {
     fs.writeFileSync(`./results/YtrackProgress/${fileName}_YTrackProgressCSharp.xlsx`, XLSXData);
     fs.rmSync(`./repo/${fileName}_${repoName}`, {recursive: true, force: true});
     console.clear();
-    console.log("Correction terminé");
+    console.log("Vérification du parcours C# terminé");
   });
 };
 module.exports = {checkYtrackProgressCSharp};

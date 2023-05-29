@@ -80,7 +80,7 @@ const checkYtrackProgressSQL = (fileName, repoName) => {
     fs.writeFileSync(`./results/YtrackProgress/${fileName}_YTrackProgressSQL.xlsx`, XLSXData);
     fs.rmSync(`./repo/${fileName}_${repoName}`, {recursive: true, force: true});
     console.clear();
-    console.log("Correction terminé");
+    console.log("Vérification du parcours SQL terminé");
   });
 };
 module.exports = {checkYtrackProgressSQL};
