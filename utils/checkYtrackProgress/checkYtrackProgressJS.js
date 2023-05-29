@@ -3,7 +3,6 @@ const {
 } = require("../utils");
 const axios = require("axios");
 const fs = require("fs");
-const shell = require("shelljs");
 const {questChecker} = require("../questChecker");
 const {JSData, JSLoop, JSFind, JSTime, JSCallMeMaybe, JSDom, JSObject} = require("../dataYTrack/JSQuests");
 const {cloneRepos} = require("../cloneRepos");
