@@ -5,9 +5,9 @@ const axios = require("axios");
 const fs = require("fs");
 const {questChecker} = require("../questChecker");
 const {cloneRepos} = require("../cloneRepos");
-const {PythonQuest1, PythonQuest2, PythonQuest3, PythonQuest4} = require("../dataYTrack/PythonQuests");
+const {JavaQuest1, JavaQuest4, JavaQuest3, JavaQuest2} = require("../dataYTrack/JavaQuests");
 
-const checkYtrackProgressPython = (fileName, repoName) => {
+const checkYtrackProgressJava = (fileName, repoName) => {
   let isWin = process.platform === "win32";
   let filePath = isWin
     ? `${__dirname.replace("\\utils\\checkYtrackProgress", "")}\\data\\json\\${fileName}.json`
@@ -29,14 +29,14 @@ const checkYtrackProgressPython = (fileName, repoName) => {
       }
       console.log("\x1b[31m%s\x1b[0m", `${progress.lastName}`);
       progress.quest1 = questChecker(
-        PythonQuest1,
+        JavaQuest1,
         progress.lastName,
         repo.firstName,
         `${fileName}_${repoName}`,
         10
       );
       progress.quest2 = questChecker(
-        PythonQuest2,
+        JavaQuest2,
         progress.lastName,
         repo.firstName,
         `${fileName}_${repoName}`,
@@ -44,21 +44,22 @@ const checkYtrackProgressPython = (fileName, repoName) => {
       );
 
       progress.quest3 = questChecker(
-        PythonQuest3,
-        progress.lastName,
-        repo.firstName,
-        `${fileName}_${repoName}`,
-        11
-      );
-
-      progress.quest4 = questChecker(
-        PythonQuest4,
+        JavaQuest3,
         progress.lastName,
         repo.firstName,
         `${fileName}_${repoName}`,
         10
       );
-      progress.total = `${Math.round(Object.keys(progress).slice(1).reduce((accumulator, key) => accumulator + progress[key]["required"] + progress[key]["bonus"], 0) / 41 * 100)} %`
+
+      progress.quest4 = questChecker(
+        JavaQuest4,
+        progress.lastName,
+        repo.firstName,
+        `${fileName}_${repoName}`,
+        10
+      );
+
+      progress.total = `${Math.round(Object.keys(progress).slice(1).reduce((accumulator, key) => accumulator + progress[key]["required"] + progress[key]["bonus"], 0) / 40 * 100)} %`
       res.push(progress);
       resolve(res);
     }
@@ -69,10 +70,10 @@ const checkYtrackProgressPython = (fileName, repoName) => {
     if (!fs.existsSync("./results/YtrackProgress")) {
       fs.mkdirSync("./results/YtrackProgress");
     }
-    fs.writeFileSync(`./results/YtrackProgress/${fileName}_YTrackProgressPython.xlsx`, XLSXData);
+    fs.writeFileSync(`./results/YtrackProgress/${fileName}_YTrackProgressJava.xlsx`, XLSXData);
     fs.rmSync(`./repo/${fileName}_${repoName}`, {recursive: true, force: true});
     console.clear();
-    console.log("Vérification du parcours Python terminé");
+    console.log("Vérification du parcours Java terminé");
   });
 };
-module.exports = {checkYtrackProgressPython};
+module.exports = {checkYtrackProgressJava};

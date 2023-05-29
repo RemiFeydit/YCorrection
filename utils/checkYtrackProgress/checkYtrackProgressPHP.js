@@ -80,7 +80,7 @@ const checkYtrackProgressPHP = (fileName, repoName) => {
     fs.writeFileSync(`./results/YtrackProgress/${fileName}_YTrackProgressPHP.xlsx`, XLSXData);
     fs.rmSync(`./repo/${fileName}_${repoName}`, {recursive: true, force: true});
     console.clear();
-    console.log("Correction terminé");
+    console.log("Vérification du parcours PHP terminé");
   });
 };
 module.exports = {checkYtrackProgressPHP};

@@ -18,6 +18,7 @@ const {checkYtrackProgressPHP} = require("./utils/checkYtrackProgress/checkYtrac
 const {checkYtrackProgressCSharp} = require("./utils/checkYtrackProgress/checkYtrackProgressCSharp");
 const {checkYtrackProgressSQL} = require("./utils/checkYtrackProgress/checkYtrackProgressSQL");
 const {checkYtrackProgressPython} = require("./utils/checkYtrackProgress/checkYtrackProgressPython");
+const {checkYtrackProgressJava} = require("./utils/checkYtrackProgress/checkYtrackProgressJava");
 
 const main = async () => {
   if (!isFileExists("./data")) {
@@ -147,6 +148,7 @@ const main = async () => {
             {hotkey: "4", title: "C#", func: checkYtrackProgressCSharp},
             {hotkey: "5", title: "SQL", func: checkYtrackProgressSQL},
             {hotkey: "6", title: "Python", func: checkYtrackProgressPython},
+            {hotkey: "7", title: "Java n1", func: checkYtrackProgressJava},
             {hotkey: "X", title: "Retour", func: undefined},
           ],
           {
