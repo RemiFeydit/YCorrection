@@ -7,10 +7,6 @@ const cloneRepos = async (fileName, repoName) => {
   let missingRepo = [];
   return new Promise(async (resolve, reject) => {
     const repo = readJsonFile(`./data/json/${fileName}`);
-    if (!isFileExists(`./repo`)) {
-      console.log("create folder file");
-      fs.mkdirSync("./repo");
-    }
     for (const student of repo) {
       await axios
         .get(

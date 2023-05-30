@@ -1,4 +1,3 @@
-const shell = require("shelljs");
 const fs = require("fs");
 const axios = require("axios");
 const {
@@ -7,17 +6,17 @@ const {
   lettersOccurenceCorrection,
   TCGBattleCorrection,
   extractObjectCorrection,
-} = require("../correction/JAVASCRIPT/JSCorrection");
+} = require("../../correction/JAVASCRIPT/JSCorrection");
 const {
   convertDate,
   readJsonFile, convertJSONDatatoXLSXData,
-} = require("./utils");
+} = require("../utils");
 
 const correctionExamJS = (fileName) => {
   let isWin = process.platform === "win32";
   let filePath = isWin
-    ? `${__dirname.replace("\\utils", "")}\\data\\json\\${fileName}.json`
-    : `${__dirname.replace("/utils", "")}/data/json/${fileName}.json`;
+    ? `${__dirname.replace("\\utils\\correctionExam", "")}\\data\\json\\${fileName}.json`
+    : `${__dirname.replace("/utils/correctionExam", "")}/data/json/${fileName}.json`;
   console.log(filePath);
   return new Promise(async (resolve, reject) => {
     let res = [];
@@ -65,19 +64,11 @@ const correctionExamJS = (fileName) => {
         repo.firstName,
         `${fileName}_${repoName}`
       );
-      grades.total =
-        grades.exercice1 +
-        grades.exercice2 +
-        grades.exercice3 +
-        grades.exercice4 +
-        grades.exercice5;
+      grades.total = Object.keys(grades).filter((val) => val.includes("exercice")).reduce((accumulator, key) => accumulator + grades[key], 0)
       res.push(grades);
       resolve(res);
     }
     let XLSXData = convertJSONDatatoXLSXData(res);
-    if (!fs.existsSync(`./results`)) {
-      shell.exec(`mkdir results`);
-    }
     fs.writeFileSync(`./results/${fileName}_jsResults.xlsx`, XLSXData);
     console.clear();
     console.log("Correction terminé");
