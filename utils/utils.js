@@ -61,7 +61,7 @@ const displayMissingRepo = (badYtrackNames) => {
   // Affiche les repos manquants
   let res =
     badYtrackNames.length == 0
-      ? "Tous les noms YTrack sont corrects"
+      ? "Tous les repos ont pu être clonés"
       : "Les repos suivants n'ont pas pu être cloné : \n";
   for (const badYtrackName of badYtrackNames) {
     res += `- ${badYtrackName} \n`;
@@ -176,7 +176,7 @@ const getFilesFromFolder = (dir, fileExtension) => {
   if (filesData.length == 0) {
     return filesData
   } else {
-    filesData.push({hotkey: filesData.length + 1, title: "Retour"})
+    filesData.push({hotkey: "X", title: "Retour"})
   }
   return filesData
 }

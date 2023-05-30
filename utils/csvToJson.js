@@ -1,5 +1,4 @@
 const fs = require("fs");
-const {isFileExists} = require("./utils");
 require("dotenv").config();
 
 const csvToJSON = async (fileName) => {
@@ -9,7 +8,6 @@ const csvToJSON = async (fileName) => {
       const csv = fs.readFileSync(`./data/${fileName}`).toString();
       const lines = csv.split("\n");
       const result = [];
-
       lines.slice(2).map((l) => {
         const obj = {};
         const line = l.split(";");

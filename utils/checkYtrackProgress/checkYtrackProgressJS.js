@@ -14,7 +14,6 @@ const checkYtrackProgressJS = (fileName, repoName) => {
     : `${__dirname.replace("/utils/checkYtrackProgress", "")}/data/json/${fileName}.json`;
   return new Promise(async (resolve, reject) => {
     await cloneRepos(`${fileName}.json`, `${repoName}`)
-    let quests = ["data", "loop", "find", "time", "call-me-maybe", "dom", "object"]
     let res = [];
     const repos = readJsonFile(filePath);
     for (let repo of repos) {
@@ -25,18 +24,18 @@ const checkYtrackProgressJS = (fileName, repoName) => {
         )
         .catch(() => {
         });
-      for (const quest of quests) {
-        progress[quest] = 0;
+      for (let i = 1; i <= 7; i++) {
+        progress[`quest${i}`] = 0;
       }
       console.log("\x1b[31m%s\x1b[0m", `${progress.lastName}`);
-      progress.data = questChecker(
+      progress.quest1 = questChecker(
         JSData,
         progress.lastName,
         repo.firstName,
         `${fileName}_${repoName}`,
         16
       );
-      progress.loop = questChecker(
+      progress.quest2 = questChecker(
         JSLoop,
         progress.lastName,
         repo.firstName,
@@ -44,7 +43,7 @@ const checkYtrackProgressJS = (fileName, repoName) => {
         13
       );
 
-      progress.find = questChecker(
+      progress.quest3 = questChecker(
         JSFind,
         progress.lastName,
         repo.firstName,
@@ -52,7 +51,7 @@ const checkYtrackProgressJS = (fileName, repoName) => {
         5
       );
 
-      progress.time = questChecker(
+      progress.quest4 = questChecker(
         JSTime,
         progress.lastName,
         repo.firstName,
@@ -60,7 +59,7 @@ const checkYtrackProgressJS = (fileName, repoName) => {
         7
       );
 
-      progress["call-me-maybe"] = questChecker(
+      progress.quest5 = questChecker(
         JSCallMeMaybe,
         progress.lastName,
         repo.firstName,
@@ -68,7 +67,7 @@ const checkYtrackProgressJS = (fileName, repoName) => {
         11
       );
 
-      progress.dom = questChecker(
+      progress.quest6 = questChecker(
         JSDom,
         progress.lastName,
         repo.firstName,
@@ -76,25 +75,19 @@ const checkYtrackProgressJS = (fileName, repoName) => {
         10
       );
 
-      progress.object = questChecker(
+      progress.quest7 = questChecker(
         JSObject,
         progress.lastName,
         repo.firstName,
         `${fileName}_${repoName}`,
         12
       );
-      progress.total = `${Math.round(Object.keys(progress).slice(1).reduce((accumulator, key) => accumulator + progress[key]["required"] + progress[key]["bonus"], 0) / 74 * 100)} %`
+      progress.total = `${Math.round(Object.keys(progress).filter((val) => val.includes("quest")).reduce((accumulator, key) => accumulator + progress[key]["required"] + progress[key]["bonus"], 0) / 74 * 100)} %`
 
       res.push(progress);
       resolve(res);
     }
     let XLSXData = convertJSONDatatoXLSXData(res);
-    if (!fs.existsSync(`./results`)) {
-      fs.mkdirSync(`./results`);
-    }
-    if (!fs.existsSync("./results/YtrackProgress")) {
-      fs.mkdirSync("./results/YtrackProgress");
-    }
     fs.writeFileSync(`./results/YtrackProgress/${fileName}_YTrackProgressJS.xlsx`, XLSXData);
     fs.rmSync(`./repo/${fileName}_${repoName}`, {recursive: true, force: true});
     console.clear();

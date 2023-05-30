@@ -1,7 +1,7 @@
-const {correctionExamSQL} = require("./utils/correctionExamSQL");
+const {correctionExamSQL} = require("./utils/correctionExam/correctionExamSQL");
 const {checkYtrackName} = require("./utils/checkYtrackName");
 const {cloneRepos} = require("./utils/cloneRepos");
-const {correctionExamJS} = require("./utils/correctionExamJS");
+const {correctionExamJS} = require("./utils/correctionExam/correctionExamJS");
 const csvToJSON = require("./utils/csvToJson");
 const {checkYtrackProgressJS} = require("./utils/checkYtrackProgress/checkYtrackProgressJS");
 const fs = require("fs");
@@ -24,6 +24,8 @@ const main = async () => {
   if (!isFileExists("./data")) {
     fs.mkdirSync("./data");
     fs.mkdirSync("./data/json");
+    fs.mkdirSync("./results");
+    fs.mkdirSync("./results/YtrackProgress");
   }
   menu(
     [
@@ -171,7 +173,6 @@ const main = async () => {
                 await item.func(item2.title.replace(".json", ""), repoName);
               }
             })
-
           }
         })
         break;

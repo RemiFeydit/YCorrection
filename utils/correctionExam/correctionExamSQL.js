@@ -1,4 +1,3 @@
-const shell = require("shelljs");
 const fs = require("fs");
 const axios = require("axios");
 const {
@@ -19,20 +18,22 @@ const {
   q15Correction,
   q16Correction,
   q17Correction,
-} = require("../correction/SQL/SQLCorrection");
+} = require("../../correction/SQL/SQLCorrection");
 const {
   readJsonFile,
   convertDate,
   isFileExists, convertJSONDatatoXLSXData,
-} = require("./utils");
+} = require("../utils");
 
 const correctionExamSQL = (fileName) => {
+  let isWin = process.platform === "win32";
+  let filePath = isWin
+    ? `${__dirname.replace("\\utils\\correctionExam", "")}\\data\\json\\${fileName}.json`
+    : `${__dirname.replace("/utils/correctionExam", "")}/data/json/${fileName}.json`;
   return new Promise(async (resolve, reject) => {
     let res = [];
     let repoName = "projet-sql-B2";
-    const repos = readJsonFile(
-      `${__dirname.replace("/utils", "")}/data/json/${fileName}.json`
-    );
+    const repos = readJsonFile(filePath);
     for (let repo of repos) {
       let grades = {lastName: repo.lastName, firstName: repo.firstName};
       await axios
@@ -137,32 +138,12 @@ const correctionExamSQL = (fileName) => {
         repo.firstName,
         `${fileName}_${repoName}`
       );
-      grades.total =
-        grades.exercice_1 +
-        grades.exercice_2 +
-        grades.exercice_3 +
-        grades.exercice_4 +
-        grades.exercice_5 +
-        grades.exercice_6 +
-        grades.exercice_7 +
-        grades.exercice_8 +
-        grades.exercice_9 +
-        grades.exercice_10 +
-        grades.exercice_11 +
-        grades.exercice_12 +
-        grades.exercice_13 +
-        grades.exercice_14 +
-        grades.exercice_15 +
-        grades.exercice_16 +
-        grades.exercice_17;
+      grades.total = Object.keys(grades).filter((val) => val.includes("exercice")).reduce((accumulator, key) => accumulator + grades[key], 0)
       console.log(grades.total);
       res.push(grades);
       resolve(res);
     }
     let XLSXData = convertJSONDatatoXLSXData(res);
-    if (!isFileExists(`./results`)) {
-      shell.exec(`mkdir ./results`);
-    }
     fs.writeFileSync(`./results/${fileName}_SQLResults.xlsx`, XLSXData);
     console.clear();
     console.log("Correction terminé");

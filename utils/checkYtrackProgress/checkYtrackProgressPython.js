@@ -58,17 +58,11 @@ const checkYtrackProgressPython = (fileName, repoName) => {
         `${fileName}_${repoName}`,
         10
       );
-      progress.total = `${Math.round(Object.keys(progress).slice(1).reduce((accumulator, key) => accumulator + progress[key]["required"] + progress[key]["bonus"], 0) / 41 * 100)} %`
+      progress.total = `${Math.round(Object.keys(progress).filter((val) => val.includes("quest")).reduce((accumulator, key) => accumulator + progress[key]["required"] + progress[key]["bonus"], 0) / 41 * 100)} %`
       res.push(progress);
       resolve(res);
     }
     let XLSXData = convertJSONDatatoXLSXData(res);
-    if (!fs.existsSync(`./results`)) {
-      fs.mkdirSync("./results");
-    }
-    if (!fs.existsSync("./results/YtrackProgress")) {
-      fs.mkdirSync("./results/YtrackProgress");
-    }
     fs.writeFileSync(`./results/YtrackProgress/${fileName}_YTrackProgressPython.xlsx`, XLSXData);
     fs.rmSync(`./repo/${fileName}_${repoName}`, {recursive: true, force: true});
     console.clear();

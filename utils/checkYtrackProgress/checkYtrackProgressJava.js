@@ -64,12 +64,6 @@ const checkYtrackProgressJava = (fileName, repoName) => {
       resolve(res);
     }
     let XLSXData = convertJSONDatatoXLSXData(res);
-    if (!fs.existsSync(`./results`)) {
-      fs.mkdirSync("./results");
-    }
-    if (!fs.existsSync("./results/YtrackProgress")) {
-      fs.mkdirSync("./results/YtrackProgress");
-    }
     fs.writeFileSync(`./results/YtrackProgress/${fileName}_YTrackProgressJava.xlsx`, XLSXData);
     fs.rmSync(`./repo/${fileName}_${repoName}`, {recursive: true, force: true});
     console.clear();
